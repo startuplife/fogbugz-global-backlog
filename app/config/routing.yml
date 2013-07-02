@@ -1,0 +1,3 @@
+vectorface_backlog:
+    resource: "@VectorfaceBacklogBundle/Resources/config/routing.yml"
+    prefix:   /

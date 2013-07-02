@@ -1,0 +1,7 @@
+parameters:
+#    vectorface_backlog.example.class: Vectorface\BacklogBundle\Example
+
+services:
+#    vectorface_backlog.example:
+#        class: %vectorface_backlog.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
