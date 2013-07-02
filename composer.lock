@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "e67df720e8a1a2e0e6df41d91d788e48",
+    "hash": "4969525945c7239e324c6b2701a6b11f",
     "packages": [
         {
             "name": "doctrine/common",
@@ -1070,6 +1070,43 @@
             "time": "2013-06-11 11:46:38"
         },
         {
+            "name": "there4/fogbugz-api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/there4/fogbugz-php-api.git",
+                "reference": "050f0ae67d359fd05a7cc15fe8e7aa2a32e06f02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/there4/fogbugz-php-api/zipball/050f0ae67d359fd05a7cc15fe8e7aa2a32e06f02",
+                "reference": "050f0ae67d359fd05a7cc15fe8e7aa2a32e06f02",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "There4": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Davis",
+                    "email": "craig@there4development.com"
+                }
+            ],
+            "description": "API interface for FogBugz",
+            "homepage": "https://github.com/there4/fogbugz-php-api",
+            "keywords": [
+                "fogbugz"
+            ],
+            "time": "2013-01-10 21:53:33"
+        },
+        {
             "name": "twig/extensions",
             "version": "v1.0.0",
             "source": {
@@ -1173,9 +1210,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "there4/fogbugz-api": 20
+    },
     "platform": {
         "php": ">=5.3.3"
     },
