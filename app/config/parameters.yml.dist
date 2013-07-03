@@ -13,3 +13,7 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    fogbugz_user: ~
+    fogbugz_password: ~
+    fogbugz_url: ~
