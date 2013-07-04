@@ -45,15 +45,28 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
         );
 
         $this->fogbugz->logon();
-        $this->fetchTickets();
+        $this->populate();
 
     }
 
-    public function fetchTickets()
+    public function populate()
     {
-        $tickets = $this->fogbugz->search(array('q' => 'status:"open"', 'cols' => 'sTitle,ixProject,ixFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo'));
-        foreach($tickets->children() as $ticket){
-            //Ticket data
+        $xml = $this->fogbugz->search(array('q' => 'status:"open"', 'cols' => 'ixBug,sTitle,ixProject,ixFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo'));
+
+
+        foreach($xml->children() as $tickets){
+            foreach($tickets->children() as $ticket){
+                $data = array(
+                    'sTitle' => (string)$ticket->sTitle,
+                    'ixProject' => (string)$ticket->ixProject,
+                    'ixFixFor' => (string)$ticket->ixFixFor,
+                    'sEmailAssignedTo' => (string)$ticket->sEmailAssignedTo,
+                    'sPersonAssignedTo' => (string)$ticket->sPersonAssignedTo,
+                    'ixPersonAssignedTo' => (string)$ticket->ixPersonAssignedTo
+                    );
+                $this->redis->hMset('VectorfaceBacklog:ticket:'.(string)$ticket->ixBug, $data);
+                $this->redis->zAdd('VectorfaceBacklog:tickets', (string)$ticket->ixBug, (string)$ticket->sTitle);
+            }
         }
     }
 
