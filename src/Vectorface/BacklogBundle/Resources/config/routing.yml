@@ -1,3 +1,11 @@
 vectorface_backlog_main:
     pattern:  /
     defaults: { _controller: VectorfaceBacklogBundle:Default:index }
+
+vectorface_backlog_autocomplete:
+    pattern:  /autocomplete
+    defaults: { _controller: VectorfaceBacklogBundle:Default:autocomplete }
+
+vectorface_backlog_add:
+    pattern:  /add/{ixBug}
+    defaults: { _controller: VectorfaceBacklogBundle:Default:add }
