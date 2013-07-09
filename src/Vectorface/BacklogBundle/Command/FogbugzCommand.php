@@ -51,7 +51,7 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
 
     public function populate()
     {
-        $xml = $this->fogbugz->search(array('q' => 'status:"open"', 'cols' => 'ixBug,sTitle,ixProject,ixFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo'));
+        $xml = $this->fogbugz->search(array('q' => 'status:"open"', 'cols' => 'ixBug,sTitle,sProject, ixProject,ixFixFor,sFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo'));
 
 
         foreach($xml->children() as $tickets){
@@ -59,7 +59,9 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
                 $data = array(
                     'sTitle' => (string)$ticket->sTitle,
                     'ixProject' => (string)$ticket->ixProject,
+                    'sProject' => (string)$ticket->sProject,
                     'ixFixFor' => (string)$ticket->ixFixFor,
+                    'sFixFor' => (string)$ticket->sFixFor,
                     'sEmailAssignedTo' => (string)$ticket->sEmailAssignedTo,
                     'sPersonAssignedTo' => (string)$ticket->sPersonAssignedTo,
                     'ixPersonAssignedTo' => (string)$ticket->ixPersonAssignedTo
