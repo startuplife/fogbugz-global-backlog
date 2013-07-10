@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(".arrow-up,.arrow-down").click(function() {
+    $(".table-tickets").on("click", ".arrow-up,.arrow-down", function() {
         var row = $(this).parents("tr:first");
 
         if ($(this).is(".arrow-up") && row.prev().length > 0) {

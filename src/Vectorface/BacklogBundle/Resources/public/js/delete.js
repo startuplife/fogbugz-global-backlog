@@ -5,10 +5,22 @@ $(document).ready(function(){
     });
 
     $("#deleteModal .trigger-delete").click(function() {
-        console.log('hello');
+        var ixBug = $('#deleteModal').data('ixBug');
+        $.ajax({
+            url: 'delete/' + ixBug,
+            type: 'post',
+            success: function (data) {
+                $('#deleteModal').modal('hide');
+                $(".table-tickets").find("[data-ixBug='" + ixBug + "']").fadeOut(1000, function() { $(this).remove(); });
+
+            }
+        });
     });
 
-    $(".trigger-modal-delete").click(function() {
+    $(".table-tickets").on("click", ".trigger-modal-delete", function(e) {
+        e.preventDefault();
+        var ixBug = $(this).closest('tr').data('ixbug');
+        $('#deleteModal').data('ixBug', ixBug);
         $('#deleteModal').modal('show');
     });
 
