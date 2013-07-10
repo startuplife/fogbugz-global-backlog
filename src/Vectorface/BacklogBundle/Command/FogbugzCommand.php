@@ -45,18 +45,19 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
         );
 
         $this->fogbugz->logon();
-        $this->populate();
-
+        $totalTickets = $this->populate();
+        $output->writeln('Total tickets: <info>'.$totalTickets.'</info>');
     }
 
     public function populate()
     {
-        $xml = $this->fogbugz->search(array('q' => 'status:"open"', 'cols' => 'ixBug,sTitle,sProject, ixProject,ixFixFor,sFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo'));
-
+        $xml = $this->fogbugz->search(array('q' => 'status:"open"', 'cols' => 'ixBug,sCategory,sTitle,sProject,ixProject,ixFixFor,sFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo'));
 
         foreach($xml->children() as $tickets){
             foreach($tickets->children() as $ticket){
                 $data = array(
+                    'ixBug' => (string)$ticket->ixBug,
+                    'sCategory' => (string)$ticket->sCategory,
                     'sTitle' => (string)$ticket->sTitle,
                     'ixProject' => (string)$ticket->ixProject,
                     'sProject' => (string)$ticket->sProject,
@@ -70,6 +71,7 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
                 $this->redis->zAdd('VectorfaceBacklog:tickets', (string)$ticket->ixBug, (string)$ticket->sTitle);
             }
         }
+        return $xml->cases->attributes()->count;
     }
 
 }

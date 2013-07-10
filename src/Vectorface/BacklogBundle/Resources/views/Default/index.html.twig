@@ -4,33 +4,43 @@
 
 <div class="row">
     <div class="span12">
-        <table class="table-tickets table table-striped table-hover">
+        <table class="table-tickets table">
             <thead>
                 <tr>
                     <th>#</th>
                     <th>Title</th>
                     <th>Milestone</th>
+                    <th>Project</th>
                     <th>Assigned To</th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>index</td>
-                    <td><a href="#">Generate automatic CSV files for BestPay</a></td>
-                    <td>Sprint 5</td>
-                    <td>Bill MacSween</td>
+                {% for backlog in backlogs %}
+                <tr data-ixBug="{{ backlog.ixBug }}" rel="tooltip" title="{{ backlog.sCategory }}">
+                    <td>{{ backlog.ixBug }}</td>
+                    <td><a href="#">{{ backlog.sTitle }}</a></td>
                     <td>
-                      <div class="btn-group pull-right">
-                        <a class="btn arrow-up" href="#"><i class="icon-arrow-up"></i></a>
-                        <a class="btn arrow-down" href="#"><i class="icon-arrow-down"></i></a>
-                        <a class="btn btn-warning" href="#"><i class="icon-trash"></i></a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                        {% if backlog.sFixFor == 'Undecided' %}
+                            <div class="muted">Undecided</div>
+                        {% else %}
+                            {{ backlog.sFixFor }}
+                        {% endif %}
+                    </td>
+                    <td>{{ backlog.sProject }}</td>
+                    <td>{{ backlog.sPersonAssignedTo }}</td>
+                    <td>
+                        <div class="btn-group pull-right">
+                            <a class="btn arrow-up" href="#"><i class="icon-arrow-up"></i></a>
+                            <a class="btn arrow-down" href="#"><i class="icon-arrow-down"></i></a>
+                            <a class="btn btn-danger trigger-modal-delete" href="#"><i class="icon-trash"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% endblock %}

@@ -9,3 +9,7 @@ vectorface_backlog_autocomplete:
 vectorface_backlog_add:
     pattern:  /add/{ixBug}
     defaults: { _controller: VectorfaceBacklogBundle:Default:add }
+
+vectorface_backlog_delete:
+    pattern:  /delete/{ixBug}
+    defaults: { _controller: VectorfaceBacklogBundle:Default:delete }
