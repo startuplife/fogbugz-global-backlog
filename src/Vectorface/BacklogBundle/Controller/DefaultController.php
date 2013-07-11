@@ -41,10 +41,9 @@ class DefaultController extends Controller
     {
         $data['status'] = true;
         $data['ticket'] = $this->redis->hGetAll('VectorfaceBacklog:ticket:'. $ixBug);
-        $checkExisting = $this->redis->zRank('VectorfaceBacklog:listOfBacklogs', $data['sTitle']);
-        if(empty($checkExisting)) {
+        $checkExisting = $this->redis->zAdd('VectorfaceBacklog:listOfBacklogs', $ixBug, $data['ticket']['sTitle']);
+        if($checkExisting) {
             $this->redis->lPush('VectorfaceBacklog:rankOfBacklogs', $ixBug);
-            $this->redis->zAdd('VectorfaceBacklog:listOfBacklogs', $ixBug, $data['sTitle']);
         } else {
             $data['status'] = false;
         }
