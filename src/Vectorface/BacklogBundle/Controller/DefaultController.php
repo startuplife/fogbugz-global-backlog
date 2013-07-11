@@ -39,9 +39,15 @@ class DefaultController extends Controller
     }
     public function addAction($ixBug)
     {
-        $data = $this->redis->hGetAll('VectorfaceBacklog:ticket:'. $ixBug);
-        $this->redis->lPush('VectorfaceBacklog:rankOfBacklogs', $ixBug);
-        $this->redis->zAdd('VectorfaceBacklog:listOfBacklogs', $ixBug, $data['sTitle']);
+        $data['status'] = true;
+        $data['ticket'] = $this->redis->hGetAll('VectorfaceBacklog:ticket:'. $ixBug);
+        $checkExisting = $this->redis->zRank('VectorfaceBacklog:listOfBacklogs', $data['sTitle']);
+        if(empty($checkExisting)) {
+            $this->redis->lPush('VectorfaceBacklog:rankOfBacklogs', $ixBug);
+            $this->redis->zAdd('VectorfaceBacklog:listOfBacklogs', $ixBug, $data['sTitle']);
+        } else {
+            $data['status'] = false;
+        }
         $response = new Response(json_encode($data));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
@@ -49,10 +55,60 @@ class DefaultController extends Controller
 
     public function deleteAction($ixBug)
     {
-        $response = new Response(json_encode($data));
+        $response = new Response();
         $response->setStatusCode(200);
         $this->redis->lRem('VectorfaceBacklog:rankOfBacklogs', $ixBug, 1);
         $this->redis->zRemRangeByScore('VectorfaceBacklog:listOfBacklogs', $ixBug, $ixBug);
+        return $response;
+    }
+
+    public function upAction($position, $ixBug)
+    {
+        $countBacklogs = $this->redis->lLen('VectorfaceBacklog:rankOfBacklogs');
+        if($countBacklogs > 1 && $position != 0) {
+            //Assumption we're ever going to have one in the list
+            $checkRightOne = $this->redis->lRange('VectorfaceBacklog:rankOfBacklogs', $position, $position);
+            $checkRightOne = $checkRightOne [0];
+
+            if($ixBug == $checkRightOne) {
+                //Get element before current position
+                $beforePosition = $this->redis->lRange('VectorfaceBacklog:rankOfBacklogs', $position-1, $position-1);
+                //Assumption we're ever going to have one in the list
+                $beforePosition = $beforePosition[0];
+
+                //Insert new record, remove prior
+                $this->redis->lInsert('VectorfaceBacklog:rankOfBacklogs', \Redis::BEFORE, $beforePosition, $ixBug);
+                $this->redis->lRem('VectorfaceBacklog:rankOfBacklogs', $ixBug, -1);
+
+            }
+        }
+        $response = new Response();
+        $response->setStatusCode(200);
+        return $response;
+    }
+
+    public function downAction($position, $ixBug)
+    {
+        $countBacklogs = $this->redis->lLen('VectorfaceBacklog:rankOfBacklogs');
+        if($countBacklogs > 1 && $position != $countBacklogs) {
+            //Assumption we're ever going to have one in the list
+            $checkRightOne = $this->redis->lRange('VectorfaceBacklog:rankOfBacklogs', $position, $position);
+            $checkRightOne = $checkRightOne [0];
+
+            if($ixBug == $checkRightOne) {
+                //Get element before current position
+                $beforePosition = $this->redis->lRange('VectorfaceBacklog:rankOfBacklogs', $position+1, $position+1);
+                //Assumption we're ever going to have one in the list
+                $beforePosition = $beforePosition[0];
+
+                //Insert new record, remove prior
+                $this->redis->lInsert('VectorfaceBacklog:rankOfBacklogs', \Redis::AFTER, $beforePosition, $ixBug);
+                $this->redis->lRem('VectorfaceBacklog:rankOfBacklogs', $ixBug, 1);
+
+            }
+        }
+        $response = new Response();
+        $response->setStatusCode(200);
         return $response;
     }
 

@@ -13,3 +13,11 @@ vectorface_backlog_add:
 vectorface_backlog_delete:
     pattern:  /delete/{ixBug}
     defaults: { _controller: VectorfaceBacklogBundle:Default:delete }
+
+vectorface_backlog_up:
+    pattern:  /up/{position}/{ixBug}
+    defaults: { _controller: VectorfaceBacklogBundle:Default:up }
+
+vectorface_backlog_down:
+    pattern:  /down/{position}/{ixBug}
+    defaults: { _controller: VectorfaceBacklogBundle:Default:down }

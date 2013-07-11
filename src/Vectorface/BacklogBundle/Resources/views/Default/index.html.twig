@@ -17,14 +17,14 @@
             </thead>
             <tbody>
                 {% for backlog in backlogs %}
-                <tr data-ixBug="{{ backlog.ixBug }}" rel="tooltip" title="{{ backlog.sCategory }}">
+                <tr data-ixBug="{{ backlog.ixBug }}" data-position="{{ loop.index-1 }}">
                     <td>{{ backlog.ixBug }}</td>
                     <td><a href="#">{{ backlog.sTitle }}</a></td>
                     <td>
                         {% if backlog.sFixFor == 'Undecided' %}
-                            <div class="muted">Undecided</div>
+                        <div class="muted">Undecided</div>
                         {% else %}
-                            {{ backlog.sFixFor }}
+                        {{ backlog.sFixFor }}
                         {% endif %}
                     </td>
                     <td>{{ backlog.sProject }}</td>

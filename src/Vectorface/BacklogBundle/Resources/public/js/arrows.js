@@ -1,17 +1,42 @@
 $(document).ready(function() {
     $(".table-tickets").on("click", ".arrow-up,.arrow-down", function() {
         var row = $(this).parents("tr:first");
+        var ixbug = row.attr('data-ixbug');
+        var position = row.attr('data-position');
+        console.log(position);
+        row.stop().removeAttr('style');
 
         if ($(this).is(".arrow-up") && row.prev().length > 0) {
-            row.stop().removeAttr('style');
-            row.insertBefore(row.prev());
-            row.effect("highlight", {}, 800);
+            $.ajax({
+                url: 'up/' + position + '/' + ixbug,
+                type: 'post',
+                success: function (data) {
+
+                    row.insertBefore(row.prev());
+                    row.effect("highlight", {}, 800);
+                    updateAllPosition()
+                }
+            });
 
         } else if($(this).is(".arrow-down") && row.next().length > 0) {
-            row.stop().removeAttr('style');
-            row.insertAfter(row.next());
-            row.effect("highlight", {}, 800);
+            $.ajax({
+                url: 'down/' + position + '/' + ixbug,
+                type: 'post',
+                success: function (data) {
+
+                    row.insertAfter(row.next());
+                    row.effect("highlight", {}, 800);
+                    updateAllPosition()
+                }
+            });
 
         }
     });
+
+function updateAllPosition() {
+    $('.table-tickets tbody > tr').each(function(i) {
+        $(this).attr("data-position", i);
+    });
+}
+
 });

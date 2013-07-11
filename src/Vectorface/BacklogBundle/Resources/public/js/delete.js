@@ -5,13 +5,13 @@ $(document).ready(function(){
     });
 
     $("#deleteModal .trigger-delete").click(function() {
-        var ixBug = $('#deleteModal').data('ixBug');
+        var ixbug = $('#deleteModal').data('ixbug');
         $.ajax({
-            url: 'delete/' + ixBug,
+            url: 'delete/' + ixbug,
             type: 'post',
             success: function (data) {
                 $('#deleteModal').modal('hide');
-                $(".table-tickets").find("[data-ixBug='" + ixBug + "']").fadeOut(1000, function() { $(this).remove(); });
+                $(".table-tickets").find("[data-ixbug='" + ixbug + "']").fadeOut(1000, function() { $(this).remove(); });
 
             }
         });
@@ -19,8 +19,8 @@ $(document).ready(function(){
 
     $(".table-tickets").on("click", ".trigger-modal-delete", function(e) {
         e.preventDefault();
-        var ixBug = $(this).closest('tr').data('ixbug');
-        $('#deleteModal').data('ixBug', ixBug);
+        var ixbug = $(this).closest('tr').data('ixbug');
+        $('#deleteModal').data('ixbug', ixbug);
         $('#deleteModal').modal('show');
     });
 
