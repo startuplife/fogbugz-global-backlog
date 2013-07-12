@@ -6,11 +6,6 @@ $(function() {
             var counter = 0;
             var json = $.map(data, function(item, counter) {
 
-                //Truncate items
-                if(counter > 14){
-                    return null;
-                }
-
                 //Truncate item.label
                 if(item.label.length > 30){
                     item.label = item.label.substr(0,30) + '...';
@@ -26,7 +21,7 @@ $(function() {
             $(".search-ticket").autocomplete({
                 delay: 25,
                 source: json,
-                minLength: 1,
+                minLength: 3,
                 autoFocus: true,
                 select: function( event, ui ) {
                     $.ajax({
