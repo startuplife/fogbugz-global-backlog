@@ -41,6 +41,7 @@ class DefaultController extends Controller
     {
         $data['status'] = true;
         $data['ticket'] = $this->redis->hGetAll('VectorfaceBacklog:ticket:'. $ixBug);
+        $data['ticket']['url'] = $this->container->getParameter('fogbugz_url_ticket');
         $checkExisting = $this->redis->zAdd('VectorfaceBacklog:listOfBacklogs', $ixBug, $data['ticket']['sTitle']);
         if($checkExisting) {
             $this->redis->lPush('VectorfaceBacklog:rankOfBacklogs', $ixBug);
