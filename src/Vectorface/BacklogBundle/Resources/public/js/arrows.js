@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $(".table-tickets").on("click", ".arrow-up,.arrow-down", function() {
+        updateAllPosition();
         var row = $(this).parents("tr:first");
         var ixbug = row.attr('data-ixbug');
         var position = row.attr('data-position');

@@ -48,12 +48,6 @@ $(function() {
                 updateAllPosition();
             }
 
-            function updateAllPosition() {
-                $('.table-tickets tbody > tr').each(function(i) {
-                    $(this).attr("data-position", i);
-                });
-            }
-
             function missingData(data) {
                 //Add muted none div to undefined or undecided content
                 for (entry in data) {
