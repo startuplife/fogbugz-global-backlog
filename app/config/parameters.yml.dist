@@ -18,3 +18,5 @@ parameters:
     fogbugz_password: ~
     fogbugz_url: ~
     fogbugz_url_ticket: ~
+
+    redis: ~
