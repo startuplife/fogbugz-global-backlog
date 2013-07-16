@@ -4,7 +4,6 @@ $(document).ready(function() {
         var row = $(this).parents("tr:first");
         var ixbug = row.attr('data-ixbug');
         var position = row.attr('data-position');
-        console.log(position);
         row.stop().removeAttr('style');
 
         if ($(this).is(".arrow-up") && row.prev().length > 0) {
