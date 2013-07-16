@@ -19,4 +19,7 @@ parameters:
     fogbugz_url: ~
     fogbugz_url_ticket: ~
 
-    redis: ~
+    redis:
+        host: ~
+        port: ~
+        db: ~
