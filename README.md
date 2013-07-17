@@ -14,6 +14,6 @@ ckdarby@ckdarby-workstation:~/www/fogbugz-global-backlog$ composer install
 
 Set up cronjob to run every 15 minutes
 ```Bash
-ckdarby@ckdarby-workstation:crontab -e
-*/15 * * * * sh php ~/backlog/app/console backlog:fogbugz
+ckdarby@ckdarby-workstation:$ crontab -e
+*/15 * * * * php ~/www/fogbugz-global-backlog/app/console backlog:fogbugz
 ```
