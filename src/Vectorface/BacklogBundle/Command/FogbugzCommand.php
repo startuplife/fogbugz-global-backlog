@@ -20,17 +20,11 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
         ->setName('backlog:fogbugz')
         ->setDescription('Backlog Fogbugz')
         ->addOption(
-           'populate',
-           null,
-           InputOption::VALUE_OPTIONAL,
-           'Will fetch all open tickets'
-        )
-        ->addOption(
-           'closed',
-           null,
-           InputOption::VALUE_OPTIONAL,
-           'Will remove backlogs that are closed in Fogbugz'
-        );
+            'push',
+            null,
+            InputOption::VALUE_NONE,
+            'Will push the backlog order to Fogbugz'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -47,6 +41,11 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
         $this->fogbugz->logon();
         $this->populate();
         $this->removeClosedTickets();
+
+        if ($input->getOption('push')) {
+            $this->pushBacklog();
+        }
+
     }
 
     public function populate()
@@ -84,6 +83,15 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
                 $this->redis->lRem('VectorfaceBacklog:rankOfBacklogs', $backlog);
             }
 
+        }
+    }
+
+    public function pushBacklog()
+    {
+        $backlogs = $this->redis->lRange("VectorfaceBacklog:rankOfBacklogs", 0, -1);
+        $totalBacklogs = count($backlogs);
+        for($i=0; $i < $totalBacklogs; $i++) {
+            $this->fogbugz->edit(array('ixBug' => $backlogs[$i], 'plugin_projectbacklog_at_fogcreek_com_ibacklog' => $i));
         }
     }
 
