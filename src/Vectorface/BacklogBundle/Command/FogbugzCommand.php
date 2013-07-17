@@ -51,7 +51,7 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
     public function populate()
     {
         $xml = $this->fogbugz->search(array('q' => 'status:"active" OR status:"open"', 'cols' => 'ixBug,sCategory,sTitle,sProject,ixProject,ixFixFor,sFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo'));
-        $this->redis->del('VectorfaceBacklog:tickets');
+        $this->redis->del('tickets');
         foreach($xml->children() as $tickets){
             foreach($tickets->children() as $ticket){
                 $data = array(
@@ -66,8 +66,8 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
                     'sPersonAssignedTo' => (string)$ticket->sPersonAssignedTo,
                     'ixPersonAssignedTo' => (string)$ticket->ixPersonAssignedTo
                     );
-                $this->redis->hMset('VectorfaceBacklog:ticket:'.(string)$ticket->ixBug, $data);
-                $this->redis->zAdd('VectorfaceBacklog:tickets', (string)$ticket->ixBug, (string)$ticket->sTitle);
+                $this->redis->hMset('ticket:'.(string)$ticket->ixBug, $data);
+                $this->redis->zAdd('tickets', (string)$ticket->ixBug, (string)$ticket->sTitle);
             }
         }
         return $xml->cases->attributes()->count;
@@ -75,12 +75,12 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
 
     public function removeClosedTickets()
     {
-        $this->redis->zInter('VectorfaceBacklog:listOfBacklogs', array('VectorfaceBacklog:tickets', 'VectorfaceBacklog:listOfBacklogs'), array(1, 0));
-        $backLogs = $this->redis->lRange("VectorfaceBacklog:rankOfBacklogs", 0, -1);
+        $this->redis->zInter('listOfBacklogs', array('tickets', 'listOfBacklogs'), array(1, 0));
+        $backLogs = $this->redis->lRange("rankOfBacklogs", 0, -1);
         foreach($backLogs as $backlog) {
-            $exists = $this->redis->ZRANGEBYSCORE('VectorfaceBacklog:listOfBacklogs', $backlog, $backlog);
+            $exists = $this->redis->ZRANGEBYSCORE('listOfBacklogs', $backlog, $backlog);
             if(empty($exists)) {
-                $this->redis->lRem('VectorfaceBacklog:rankOfBacklogs', $backlog);
+                $this->redis->lRem('rankOfBacklogs', $backlog);
             }
 
         }
@@ -88,7 +88,7 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
 
     public function pushBacklog()
     {
-        $backlogs = $this->redis->lRange("VectorfaceBacklog:rankOfBacklogs", 0, -1);
+        $backlogs = $this->redis->lRange("rankOfBacklogs", 0, -1);
         $totalBacklogs = count($backlogs);
         for($i=0; $i < $totalBacklogs; $i++) {
             $this->fogbugz->edit(array('ixBug' => $backlogs[$i], 'plugin_projectbacklog_at_fogcreek_com_ibacklog' => $i));

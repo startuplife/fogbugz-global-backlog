@@ -29,6 +29,7 @@ class RedisHelper extends AbstractContainerAware
         $redis = new \Redis();
         $redis->connect($parameters["host"], $parameters["port"]);
         $redis->select($parameters["db"]);
+        $redis->setOption(\Redis::OPT_PREFIX, $parameters["prefix"]);
         $this->redis = $redis;
 
         return $this->redis;

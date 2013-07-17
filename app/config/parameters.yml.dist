@@ -20,6 +20,7 @@ parameters:
     fogbugz_url_ticket: ~
 
     redis:
-        host: ~
-        port: ~
-        db: ~
+        host: 127.0.0.1
+        port: 6379
+        db: 0
+        prefix: VectorfaceBacklog:
