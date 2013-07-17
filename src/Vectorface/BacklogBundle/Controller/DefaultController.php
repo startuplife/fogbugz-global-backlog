@@ -4,6 +4,8 @@ namespace Vectorface\BacklogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 class DefaultController extends Controller
 {
@@ -33,8 +35,8 @@ class DefaultController extends Controller
             $data[] = array('label'=> $key, 'value' => $value);
         }
 
-        $response = new Response(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
+        $response = new JsonResponse();
+        $response->setData($data);
         return $response;
     }
     public function addAction($ixBug)
@@ -51,8 +53,8 @@ class DefaultController extends Controller
         } else {
             $data['status'] = false;
         }
-        $response = new Response(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
+        $response = new JsonResponse();
+        $response->setData($data);
         return $response;
     }
 
@@ -62,7 +64,6 @@ class DefaultController extends Controller
         $redis = $redisHelper->getRedis();
 
         $response = new Response();
-        $response->setStatusCode(200);
         $redis->lRem('VectorfaceBacklog:rankOfBacklogs', $ixBug, 1);
         $redis->zRemRangeByScore('VectorfaceBacklog:listOfBacklogs', $ixBug, $ixBug);
         return $response;
@@ -92,7 +93,6 @@ class DefaultController extends Controller
             }
         }
         $response = new Response();
-        $response->setStatusCode(200);
         return $response;
     }
 
@@ -120,7 +120,6 @@ class DefaultController extends Controller
             }
         }
         $response = new Response();
-        $response->setStatusCode(200);
         return $response;
     }
 
