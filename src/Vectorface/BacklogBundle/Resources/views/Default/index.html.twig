@@ -19,7 +19,7 @@
                 {% for backlog in backlogs %}
                 <tr data-ixBug="{{ backlog.ixBug }}" data-position="{{ loop.index-1 }}">
                     <td>{{ backlog.ixBug }}</td>
-                    <td><a href="{{ fogbugz_url_ticket }}{{ backlog.ixBug }}">{{ backlog.sTitle }}</a></td>
+                    <td><a href="{{ fogbugz_url_ticket }}{{ backlog.ixBug }}" target="_blank">{{ backlog.sTitle }}</a></td>
                     <td>
                         {% if backlog.sFixFor == 'Undecided' %}
                         <div class="muted">Undecided</div>
