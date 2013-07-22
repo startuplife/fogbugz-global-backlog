@@ -11,18 +11,12 @@ $(function() {
                     item.label = item.label.substr(0,30) + '...';
                 }
 
-                //[0]: Create standard name search; [1]: Allow for ticket search in
-                autocomplete = new Array();
-                autocomplete[0] = {
-                    label: item.label,
+                //[0]: Create custom search of ticket id + title
+                autocomplete = {
+                    label: '#' + item.value + ' - ' + item.label,
                     value: item.label,
                     id: item.value
                 };
-                autocomplete[1] = {
-                    label: item.value,
-                    value: item.label,
-                    id: item.value
-                }
                 return autocomplete;
 
             });
@@ -60,7 +54,7 @@ $(function() {
             function missingData(data) {
                 //Add muted none div to undefined or undecided content
                 for (entry in data) {
-                    if(data[entry] === undefined || data[entry].indexOf('Undecided') >= 0 ) {
+                    if(data[entry] === undefined || data[entry].indexOf('Undecided') >= 0 || data[entry].indexOf('Unassigned')) {
                         data[entry] = '<span class="muted">Undecided</span>';
                     }
                 }
