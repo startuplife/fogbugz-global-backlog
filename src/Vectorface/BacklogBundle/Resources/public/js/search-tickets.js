@@ -11,17 +11,26 @@ $(function() {
                     item.label = item.label.substr(0,30) + '...';
                 }
 
-                return {
+                //[0]: Create standard name search; [1]: Allow for ticket search in
+                autocomplete = new Array();
+                autocomplete[0] = {
                     label: item.label,
                     value: item.label,
                     id: item.value
                 };
+                autocomplete[1] = {
+                    label: item.value,
+                    value: item.label,
+                    id: item.value
+                }
+                return autocomplete;
+
             });
 
             $(".search-ticket").autocomplete({
                 delay: 25,
                 source: json,
-                minLength: 3,
+                minLength: 2,
                 autoFocus: true,
                 select: function( event, ui ) {
                     $.ajax({
