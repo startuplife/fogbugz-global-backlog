@@ -17,3 +17,13 @@ Set up cronjob to run every 15 minutes
 ckdarby@ckdarby-workstation:$ crontab -e
 */15 * * * * php ~/www/fogbugz-global-backlog/app/console backlog:fogbugz
 ```
+
+Manually pull from fogbugz
+```Bash
+ckdarby@ckdarby-workstation:~/www/fogbugz-global-backlog$ php app/console backlog:fogbugz
+```
+
+Manually push backlog order to fogbugz
+```Bash
+ckdarby@ckdarby-workstation:~/www/fogbugz-global-backlog$ php app/console backlog:fogbugz --push
+```
