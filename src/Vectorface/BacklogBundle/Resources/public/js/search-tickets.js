@@ -22,9 +22,11 @@ $(function() {
             });
 
             $(".search-ticket").autocomplete({
-                delay: 25,
-                source: json,
-                minLength: 2,
+                source: function(request, response) {
+                    var results = $.ui.autocomplete.filter(json, request.term);
+                    response(results.slice(0, 15));
+                },
+                minLength: 1,
                 autoFocus: true,
                 select: function( event, ui ) {
                     $.ajax({
