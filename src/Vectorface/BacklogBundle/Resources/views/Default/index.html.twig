@@ -18,8 +18,8 @@
             </thead>
             <tbody>
                 {% for backlog in backlogs %}
-                <tr data-ixBug="{{ backlog.ixBug }}" data-position="{{ loop.index-1 }}">
-                    <td><i class="icon-list"></i></td>
+                <tr data-ixBug="{{ backlog.ixBug }}">
+                    <td><i class="icon-list draggable"></i></td>
                     <td>{{ backlog.ixBug }}</td>
                     <td><a href="{{ fogbugz_url_ticket }}{{ backlog.ixBug }}" target="_blank">{{ backlog.sTitle }}</a></td>
                     <td>
