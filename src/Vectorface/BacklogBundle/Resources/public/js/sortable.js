@@ -10,6 +10,17 @@ $(function() {
     $( "#sortable tbody" ).sortable({
         helper: fixHelper,
         placeholder: "warning",
-        handle: '.icon-list'
+        handle: '.icon-list',
+        stop: function(event, ui) {
+            var newPosition = $(ui.item).prevAll().length;
+            var ixbug = $(ui.item).attr('data-ixbug');
+            $.ajax({
+                url: 'move/' + ixbug + '/' + newPosition,
+                type: 'post',
+                success: function (data) {
+                    
+                }
+            });
+        }
     }).disableSelection();
 });

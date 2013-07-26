@@ -69,56 +69,24 @@ class DefaultController extends Controller
         return $response;
     }
 
-    public function upAction($position, $ixBug)
+    public function moveAction($ixBug, $position)
     {
         $redisHelper = $this->get("redishelper");
         $redis = $redisHelper->getRedis();
 
-        $countBacklogs = $redis->lLen('rankOfBacklogs');
-        if($countBacklogs > 1 && $position != 0) {
-            //Assumption we're ever going to have one in the list
-            $checkRightOne = $redis->lRange('rankOfBacklogs', $position, $position);
-            $checkRightOne = $checkRightOne [0];
+        $redis->lRem('rankOfBacklogs', $ixBug, 0);
 
-            if($ixBug == $checkRightOne) {
-                //Get element before current position
-                $beforePosition = $redis->lRange('rankOfBacklogs', $position-1, $position-1);
-                //Assumption we're ever going to have one in the list
-                $beforePosition = $beforePosition[0];
+        $currentValue = $redis->lIndex('rankOfBacklogs', $position);
+        $listLength = $redis->lLen('rankOfBacklogs');
 
-                //Insert new record, remove prior
-                $redis->lInsert('rankOfBacklogs', \Redis::BEFORE, $beforePosition, $ixBug);
-                $redis->lRem('rankOfBacklogs', $ixBug, -1);
-
-            }
+        if($position == 0) {
+            $redis->lPush('rankOfBacklogs', $ixBug);
+        } elseif($position == $listLength) {
+            $redis->rPush('rankOfBacklogs', $ixBug);
+        } else {
+            $redis->lInsert('rankOfBacklogs', \Redis::BEFORE, $currentValue, $ixBug);
         }
-        $response = new Response();
-        return $response;
-    }
 
-    public function downAction($position, $ixBug)
-    {
-        $redisHelper = $this->get("redishelper");
-        $redis = $redisHelper->getRedis();
-
-        $countBacklogs = $redis->lLen('rankOfBacklogs');
-        if($countBacklogs > 1 && $position != $countBacklogs) {
-            //Assumption we're ever going to have one in the list
-            $checkRightOne = $redis->lRange('rankOfBacklogs', $position, $position);
-            $checkRightOne = $checkRightOne [0];
-
-            if($ixBug == $checkRightOne) {
-                //Get element before current position
-                $beforePosition = $redis->lRange('rankOfBacklogs', $position+1, $position+1);
-                //Assumption we're ever going to have one in the list
-                $beforePosition = $beforePosition[0];
-
-                //Insert new record, remove prior
-                $redis->lInsert('rankOfBacklogs', \Redis::AFTER, $beforePosition, $ixBug);
-                $redis->lRem('rankOfBacklogs', $ixBug, 1);
-
-            }
-        }
         $response = new Response();
         return $response;
     }
