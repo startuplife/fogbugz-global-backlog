@@ -30,7 +30,13 @@
                         {% endif %}
                     </td>
                     <td>{{ backlog.sProject }}</td>
-                    <td>{{ backlog.sPersonAssignedTo }}</td>
+                    <td>
+                        {% if backlog.sPersonAssignedTo == 'Unassigned' %}
+                        <div class="muted">Unassigned</div>
+                        {% else %}
+                        {{ backlog.sPersonAssignedTo }}
+                        {% endif %}
+                    </td>
                     <td>
                         <div class="btn-group pull-right">
                             <a class="btn btn-danger trigger-modal-delete" href="#"><i class="icon-trash"></i></a>
