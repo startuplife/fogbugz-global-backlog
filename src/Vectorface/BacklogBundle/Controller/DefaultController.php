@@ -11,8 +11,7 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        $redisHelper = $this->get("redishelper");
-        $redis = $redisHelper->getRedis();
+        $redis = $this->get("redishelper")->getRedis();
 
         $data['backlogs'] = array();
         $backlogs = $redis->lRange("rankOfBacklogs", 0, -1);
@@ -25,8 +24,7 @@ class DefaultController extends Controller
 
     public function autocompleteAction()
     {
-        $redisHelper = $this->get("redishelper");
-        $redis = $redisHelper->getRedis();
+        $redis = $this->get("redishelper")->getRedis();
 
         $tickets = $redis->zrevrange("tickets", 0, -1, true);
 
@@ -41,8 +39,7 @@ class DefaultController extends Controller
     }
     public function addAction($ixBug)
     {
-        $redisHelper = $this->get("redishelper");
-        $redis = $redisHelper->getRedis();
+        $redis = $this->get("redishelper")->getRedis();
 
         $data['status'] = true;
         $data['ticket'] = $redis->hGetAll('ticket:'. $ixBug);
@@ -60,8 +57,7 @@ class DefaultController extends Controller
 
     public function deleteAction($ixBug)
     {
-        $redisHelper = $this->get("redishelper");
-        $redis = $redisHelper->getRedis();
+        $redis = $this->get("redishelper")->getRedis();
 
         $response = new Response();
         $redis->lRem('rankOfBacklogs', $ixBug, 1);
@@ -71,8 +67,7 @@ class DefaultController extends Controller
 
     public function moveAction($ixBug, $position)
     {
-        $redisHelper = $this->get("redishelper");
-        $redis = $redisHelper->getRedis();
+        $redis = $this->get("redishelper")->getRedis();
 
         $redis->lRem('rankOfBacklogs', $ixBug, 0);
 
