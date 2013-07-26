@@ -22,9 +22,11 @@ $(function() {
             });
 
             $(".search-ticket").autocomplete({
-                delay: 25,
-                source: json,
-                minLength: 2,
+                source: function(request, response) {
+                    var results = $.ui.autocomplete.filter(json, request.term);
+                    response(results.slice(0, 15));
+                },
+                minLength: 1,
                 autoFocus: true,
                 select: function( event, ui ) {
                     $.ajax({
@@ -44,7 +46,7 @@ $(function() {
             function addTicketRow(data, ixBug) {
                 data = missingData(data);
                 html = '<tr data-ixBug="' + ixBug + '">';
-                html += '<td>' + ixBug + '</td><td><a href="' + data.url + ixBug +'">' + data.sTitle + '</a></td><td>' + data.sFixFor + '</td><td>' + data.sProject + '</td><td>' + data.sPersonAssignedTo + '</td>';
+                html += '<td><i class="icon-list draggable"></i></td><td>' + ixBug + '</td><td><a href="' + data.url + ixBug +'">' + data.sTitle + '</a></td><td>' + data.sFixFor + '</td><td>' + data.sProject + '</td><td>' + data.sPersonAssignedTo + '</td>';
                 html += '<td><div class="btn-group pull-right"><a class="btn arrow-up" href="#"><i class="icon-arrow-up"></i></a><a class="btn arrow-down" href="#"><i class="icon-arrow-down"></i></a><a class="btn btn-danger trigger-modal-delete" href="#"><i class="icon-trash"></i></a></div></td>';
                 html += '</tr>';
                 row = $('.table-tickets tbody').prepend(html);
