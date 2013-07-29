@@ -2,7 +2,12 @@ parameters:
 #    vectorface_backlog.example.class: Vectorface\BacklogBundle\Example
 
 services:
-    redishelper:
-        class: Vectorface\BacklogBundle\RedisHelper
+    RedisService:
+        class: Vectorface\BacklogBundle\Service\RedisService
+        calls:
+            - [setContainer, [@service_container]]
+    FogbugzService:
+        class: Vectorface\BacklogBundle\Service\FogbugzService
+        arguments: ["@RedisService"]
         calls:
             - [setContainer, [@service_container]]

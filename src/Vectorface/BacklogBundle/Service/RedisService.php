@@ -1,12 +1,12 @@
 <?php
 
-namespace Vectorface\BacklogBundle;
+namespace Vectorface\BacklogBundle\Service;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vectorface\BacklogBundle\AbstractContainerAware;
 
-class RedisHelper extends AbstractContainerAware
+class RedisService extends AbstractContainerAware
 {
     private $redis;
 
@@ -26,11 +26,10 @@ class RedisHelper extends AbstractContainerAware
         $parameters = $this->getContainer()->getParameter("redis");
 
         // connecting to redis
-        $redis = new \Redis();
-        $redis->connect($parameters["host"], $parameters["port"]);
-        $redis->select($parameters["db"]);
-        $redis->setOption(\Redis::OPT_PREFIX, $parameters["prefix"]);
-        $this->redis = $redis;
+        $this->redis = new \Redis();
+        $this->redis->connect($parameters["host"], $parameters["port"]);
+        $this->redis->select($parameters["db"]);
+        $this->redis->setOption(\Redis::OPT_PREFIX, $parameters["prefix"]);
 
         return $this->redis;
     }
