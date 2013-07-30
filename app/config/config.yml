@@ -24,8 +24,6 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
-    globals:
-        fogbugz_url_ticket: %fogbugz_url_ticket%
 
 # Assetic Configuration
 assetic:
