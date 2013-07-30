@@ -14,10 +14,11 @@ parameters:
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    fogbugz_user: ~
-    fogbugz_password: ~
-    fogbugz_url: ~
-    fogbugz_url_ticket: ~
+    fogbugz:
+        user: ~
+        password: ~
+        url: ~
+        url_ticket: ~
 
     redis:
         host: 127.0.0.1
