@@ -28,9 +28,9 @@ class FogbugzService extends AbstractContainerAware
         $this->fogbugz->logon();
     }
 
-    public function populate()
+    public function pullTickets()
     {
-        $xml = $this->fogbugz->search(array('q' => 'status:"active" OR status:"open"', 'cols' => 'ixBug,sCategory,sTitle,sProject,ixProject,ixFixFor,sFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo'));
+        $xml = $this->fogbugz->search(array('q' => 'status:"active" OR status:"open"', 'cols' => 'ixBug,sCategory,sTitle,sProject,ixProject,ixFixFor,sFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo,hrsCurrEst'));
         $this->redis->del('tickets');
         foreach($xml->children() as $tickets){
             foreach($tickets->children() as $ticket){
@@ -44,7 +44,8 @@ class FogbugzService extends AbstractContainerAware
                     'sFixFor' => (string)$ticket->sFixFor,
                     'sEmailAssignedTo' => (string)$ticket->sEmailAssignedTo,
                     'sPersonAssignedTo' => (string)$ticket->sPersonAssignedTo,
-                    'ixPersonAssignedTo' => (string)$ticket->ixPersonAssignedTo
+                    'ixPersonAssignedTo' => (string)$ticket->ixPersonAssignedTo,
+                    'hrsCurrEst' => (string)$ticket->hrsCurrEst
                     );
                 $this->redis->hMset('ticket:'.(string)$ticket->ixBug, $data);
                 $this->redis->zAdd('tickets', (string)$ticket->ixBug, (string)$ticket->sTitle);
@@ -72,6 +73,17 @@ class FogbugzService extends AbstractContainerAware
         $totalBacklogs = count($backlogs);
         for($i=0; $i < $totalBacklogs; $i++) {
             $this->fogbugz->edit(array('ixBug' => $backlogs[$i], 'plugin_projectbacklog_at_fogcreek_com_ibacklog' => $i));
+        }
+    }
+
+    public function pullUsers()
+    {
+        $xml = $this->fogbugz->listPeople(array('fIncludeVirtual' => 1, 'fIncludeNormal' => 1));
+        $this->redis->del('users');
+        foreach($xml->children() as $users){
+            foreach($users->children() as $user){
+                $this->redis->zAdd('users', $user->ixPerson, (string)$user->sFullName);
+            }
         }
     }
 

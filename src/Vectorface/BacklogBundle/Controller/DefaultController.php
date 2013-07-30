@@ -5,7 +5,7 @@ namespace Vectorface\BacklogBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends Controller
 {
@@ -83,6 +83,27 @@ class DefaultController extends Controller
         }
 
         $response = new Response();
+        return $response;
+    }
+
+    public function pushAction()
+    {
+        $fogbugz = $this->get("FogbugzService");
+        $fogbugz->logon();
+        $fogbugz->pushBacklog();
+
+        $response = new RedirectResponse($this->generateUrl('vectorface_backlog_main'));
+        return $response;
+    }
+
+    public function pullAction()
+    {
+        $fogbugz = $this->get("FogbugzService");
+        $fogbugz->logon();
+        $fogbugz->pullUsers();
+        $fogbugz->pullTickets();
+
+        $response = new RedirectResponse($this->generateUrl('vectorface_backlog_main'));
         return $response;
     }
 

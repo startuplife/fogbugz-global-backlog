@@ -35,7 +35,8 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
         $this->fogbugz = $container->get("FogbugzService");
         $this->fogbugz->logon();
 
-        $this->fogbugz->populate();
+        $this->fogbugz->pullUsers();
+        $this->fogbugz->pullTickets();
         $this->fogbugz->removeClosedTickets();
 
         if ($input->getOption('push')) {

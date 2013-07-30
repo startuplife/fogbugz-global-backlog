@@ -17,3 +17,11 @@ vectorface_backlog_delete:
 vectorface_backlog_up:
     pattern:  /move/{ixBug}/{position}
     defaults: { _controller: VectorfaceBacklogBundle:Default:move }
+
+vectorface_backlog_pull:
+    pattern:  /pull
+    defaults: { _controller: VectorfaceBacklogBundle:Default:pull }
+
+vectorface_backlog_push:
+    pattern:  /push
+    defaults: { _controller: VectorfaceBacklogBundle:Default:push }
