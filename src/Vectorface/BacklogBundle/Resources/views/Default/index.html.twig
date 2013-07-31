@@ -11,7 +11,7 @@
                     <th>#</th>
                     <th>Title</th>
                     <th>Milestone</th>
-                    <th>Project</th>
+                    <th>Estimate</th>
                     <th>Assigned To</th>
                     <th>&nbsp;</th>
                 </tr>
@@ -24,15 +24,21 @@
                     <td><a href="{{ fogbugzticket(backlog.ixBug) }}" target="_blank">{{ backlog.sTitle }}</a></td>
                     <td>
                         {% if backlog.sFixFor == 'Undecided' %}
-                        <div class="muted">Undecided</div>
+                        <div class="muted">None</div>
                         {% else %}
                         {{ backlog.sFixFor }}
                         {% endif %}
                     </td>
-                    <td>{{ backlog.sProject }}</td>
+                    <td>
+                        {% if backlog.hrsCurrEst == 0 %}
+                        <div class="muted">None</div>
+                        {% else %}
+                        {{ backlog.hrsCurrEst }} hours
+                        {% endif %}
+                    </td>
                     <td>
                         {% if backlog.sPersonAssignedTo == 'Unassigned' %}
-                        <div class="muted">Unassigned</div>
+                        <div class="muted">None</div>
                         {% else %}
                         {{ backlog.sPersonAssignedTo }}
                         {% endif %}
