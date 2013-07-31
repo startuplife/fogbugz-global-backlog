@@ -55,8 +55,8 @@ $(function() {
             function missingData(data) {
                 //Add muted none div to undefined or undecided content
                 for (entry in data) {
-                    if(data[entry] === undefined || data[entry].indexOf('Undecided') >= 0 || data[entry].indexOf('Unassigned') >= 0) {
-                        data[entry] = '<span class="muted">' + data[entry] + '</span>';
+                    if(data[entry] === undefined || data[entry].indexOf('Undecided') >= 0 || data[entry].indexOf('Unassigned') >= 0 || data[entry] == 0) {
+                        data[entry] = '<span class="muted">None</span>';
                     }
                 }
                 return data;
