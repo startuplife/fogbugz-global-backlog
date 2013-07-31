@@ -28,6 +28,33 @@
         </div>
     </div>
 
+    <div id="editModal" class="modal hide fade" tabindex="-1" role="dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Edit this Entry?</h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" method="POST">
+                <div class="control-group">
+                    <label class="control-label">Time Estimate</label>
+                    <div class="controls">
+                        <input id="timeEstimate" name="timeEstimate" type="text" placeholder="e.g. 0" class="input-large">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Assigned To</label>
+                    <div class="controls">
+                        <input id="personAssignedTo" name="personAssignedTo" type="text" placeholder="e.g. Cory Darby" class="input-large search-users">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-success trigger-edit" data-ixBug="">Edit</button>
+        </div>
+    </div>
+
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
             <div class="container">
@@ -35,7 +62,7 @@
                 <ul class="nav pull-right">
                     <li>
                         <form class="navbar-search">
-                            <input type="text" class="search-ticket search-query" autofocus="autofocus" placeholder="Add to backlog">
+                            <input type="text" class="search-tickets search-query" autofocus="autofocus" placeholder="Add to backlog">
                         </form>
                     </li>
                     <li class="divider-vertical"></li>
@@ -62,7 +89,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="{{ asset('bundles/vectorfacebacklog/js/bootstrap.min.js') }}" type="text/javascript" /></script>
     <script src="{{ asset('bundles/vectorfacebacklog/js/search-tickets.js') }}" type="text/javascript" /></script>
-    <script src="{{ asset('bundles/vectorfacebacklog/js/delete.js') }}" type="text/javascript" /></script>
+    <script src="{{ asset('bundles/vectorfacebacklog/js/search-users.js') }}" type="text/javascript" /></script>
+    <script src="{{ asset('bundles/vectorfacebacklog/js/modal.js') }}" type="text/javascript" /></script>
     <script src="{{ asset('bundles/vectorfacebacklog/js/tooltip.js') }}" type="text/javascript" /></script>
     <script src="{{ asset('bundles/vectorfacebacklog/js/sortable.js') }}" type="text/javascript" /></script>
     {% endblock %}

@@ -22,14 +22,14 @@ class DefaultController extends Controller
         return $this->render('VectorfaceBacklogBundle:Default:index.html.twig', $data);
     }
 
-    public function autocompleteAction()
+    public function autocompleteAction($type)
     {
         $redis = $this->get("RedisService")->getRedis();
 
-        $tickets = $redis->zrevrange("tickets", 0, -1, true);
+        $objects = $redis->zrevrange($type, 0, -1, true);
 
         $data=array();
-        foreach ($tickets as $key => $value) {
+        foreach ($objects as $key => $value) {
             $data[] = array('label'=> $key, 'value' => $value);
         }
 
@@ -37,13 +37,14 @@ class DefaultController extends Controller
         $response->setData($data);
         return $response;
     }
+
     public function addAction($ixBug)
     {
         $redis = $this->get("RedisService")->getRedis();
 
         $data['status'] = true;
         $data['ticket'] = $redis->hGetAll('ticket:'. $ixBug);
-        $data['ticket']['url'] = $this->container->getParameter('fogbugz_url_ticket');
+        $data['ticket']['url'] = $this->container->getParameter('fogbugz')['url_ticket'];
         $checkExisting = $redis->zAdd('listOfBacklogs', $ixBug, $data['ticket']['sTitle']);
         if($checkExisting) {
             $redis->lPush('rankOfBacklogs', $ixBug);
@@ -104,6 +105,29 @@ class DefaultController extends Controller
         $fogbugz->pullTickets();
 
         $response = new RedirectResponse($this->generateUrl('vectorface_backlog_main'));
+        return $response;
+    }
+
+    public function editAction($ixBug)
+    {
+        $data = array();
+        $fogbugz = $this->get("FogbugzService");
+        $fogbugz->logon();
+
+        $request = $this->get("request");
+        $timeEstimate = $request->request->get("timeEstimate");
+        $personAssignedTo = $request->request->get("personAssignedTo");
+
+        if(!is_null($timeEstimate) || !is_null($personAssignedTo)) {
+            $fogbugz->updatePersonAssignedTo($ixBug, $personAssignedTo);
+            $fogbugz->updateTimeEstimate($ixBug, $timeEstimate);
+        }
+
+        $redis = $this->get("RedisService")->getRedis();
+        $data = $redis->hGetAll('ticket:'. $ixBug);
+
+        $response = new JsonResponse();
+        $response->setData($data);
         return $response;
     }
 

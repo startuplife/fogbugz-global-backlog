@@ -44,7 +44,6 @@ class FogbugzService extends AbstractContainerAware
                     'sFixFor' => (string)$ticket->sFixFor,
                     'sEmailAssignedTo' => (string)$ticket->sEmailAssignedTo,
                     'sPersonAssignedTo' => (string)$ticket->sPersonAssignedTo,
-                    'ixPersonAssignedTo' => (string)$ticket->ixPersonAssignedTo,
                     'hrsCurrEst' => (string)$ticket->hrsCurrEst
                     );
                 $this->redis->hMset('ticket:'.(string)$ticket->ixBug, $data);
@@ -84,6 +83,24 @@ class FogbugzService extends AbstractContainerAware
             foreach($users->children() as $user){
                 $this->redis->zAdd('users', $user->ixPerson, (string)$user->sFullName);
             }
+        }
+    }
+
+    public function updateTimeEstimate($ixBug, $estimatedTime)
+    {
+        $ticket = $this->redis->hGetAll('ticket:'. $ixBug);
+        if($ticket['hrsCurrEst'] != $estimatedTime) {
+            $this->fogbugz->edit(array('ixBug' => $ixBug, 'hrsCurrEst' => $estimatedTime));
+            $this->redis->hSet('ticket:'.$ixBug, 'hrsCurrEst', $estimatedTime);
+        }
+    }
+
+    public function updatePersonAssignedTo($ixBug, $personAssignedTo)
+    {
+        $ticket = $this->redis->hGetAll('ticket:'. $ixBug);
+        if($ticket['sPersonAssignedTo'] != $personAssignedTo) {
+            $this->fogbugz->edit(array('ixBug' => $ixBug, 'sPersonAssignedTo' => $personAssignedTo));
+            $this->redis->hSet('ticket:'.$ixBug, 'sPersonAssignedTo', $personAssignedTo);
         }
     }
 

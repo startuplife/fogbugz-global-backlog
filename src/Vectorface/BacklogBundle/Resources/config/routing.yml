@@ -2,8 +2,8 @@ vectorface_backlog_main:
     pattern:  /
     defaults: { _controller: VectorfaceBacklogBundle:Default:index }
 
-vectorface_backlog_autocomplete:
-    pattern:  /autocomplete
+vectorface_backlog_autocomplete_tickets:
+    pattern:  /autocomplete/{type}
     defaults: { _controller: VectorfaceBacklogBundle:Default:autocomplete }
 
 vectorface_backlog_add:
@@ -25,3 +25,7 @@ vectorface_backlog_pull:
 vectorface_backlog_push:
     pattern:  /push
     defaults: { _controller: VectorfaceBacklogBundle:Default:push }
+
+vectorface_backlog_edit:
+    pattern:  /edit/{ixBug}
+    defaults: { _controller: VectorfaceBacklogBundle:Default:edit }

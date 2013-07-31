@@ -1,6 +1,6 @@
 $(function() {
     $.ajax({
-        url: "autocomplete",
+        url: "autocomplete/tickets",
         dataType: "json",
         success: function(data) {
             var counter = 0;
@@ -21,7 +21,7 @@ $(function() {
 
             });
 
-            $(".search-ticket").autocomplete({
+            $(".search-tickets").autocomplete({
                 source: function(request, response) {
                     var results = $.ui.autocomplete.filter(json, request.term);
                     response(results.slice(0, 15));
@@ -35,7 +35,7 @@ $(function() {
                         dataType: "json",
                         success: function (data) {
                             if(data.status) {
-                                $('.search-ticket').val('');
+                                $('.search-tickets').val('');
                                 addTicketRow(data.ticket, ui.item.id);
                             }
                         }
@@ -47,7 +47,7 @@ $(function() {
                 data = missingData(data);
                 html = '<tr data-ixBug="' + ixBug + '">';
                 html += '<td><i class="icon-list draggable"></i></td><td>' + ixBug + '</td><td><a href="' + data.url + ixBug +'">' + data.sTitle + '</a></td><td>' + data.sFixFor + '</td><td>' + data.sProject + '</td><td>' + data.sPersonAssignedTo + '</td>';
-                html += '<td><div class="btn-group pull-right"><a class="btn btn-danger trigger-modal-delete" href="#"><i class="icon-trash"></i></a></div></td>';
+                html += '<td><div class="btn-group pull-right"><a class="btn trigger-modal-edit" href="#"><i class="icon-pencil"></i></a><a class="btn btn-danger trigger-modal-delete" href="#"><i class="icon-trash"></i></a></div></td>';
                 html += '</tr>';
                 row = $('.table-tickets tbody').prepend(html);
             }
