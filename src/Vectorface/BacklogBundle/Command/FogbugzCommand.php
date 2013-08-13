@@ -37,7 +37,6 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
 
         $this->fogbugz->pullUsers();
         $this->fogbugz->pullTickets();
-        $this->fogbugz->removeClosedTickets();
 
         if ($input->getOption('push')) {
             $this->fogbugz->pushBacklog();

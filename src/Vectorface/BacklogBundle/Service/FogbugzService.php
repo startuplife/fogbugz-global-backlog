@@ -56,19 +56,6 @@ class FogbugzService extends AbstractContainerAware
         return $xml->cases->attributes()->count;
     }
 
-    public function removeClosedTickets()
-    {
-        $this->redis->zInter('listOfBacklogs', array('tickets', 'listOfBacklogs'), array(1, 0));
-        $backLogs = $this->redis->lRange("rankOfBacklogs", 0, -1);
-        foreach($backLogs as $backlog) {
-            $exists = $this->redis->ZRANGEBYSCORE('listOfBacklogs', $backlog, $backlog);
-            if(empty($exists)) {
-                $this->redis->lRem('rankOfBacklogs', $backlog);
-            }
-
-        }
-    }
-
     public function pushBacklog()
     {
         $backlogs = $this->redis->lRange("rankOfBacklogs", 0, -1);
