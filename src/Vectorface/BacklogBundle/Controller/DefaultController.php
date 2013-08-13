@@ -22,15 +22,35 @@ class DefaultController extends Controller
         return $this->render('VectorfaceBacklogBundle:Default:index.html.twig', $data);
     }
 
-    public function autocompleteAction($type)
+    public function autocompleteUsersAction()
     {
         $redis = $this->get("RedisService")->getRedis();
 
-        $objects = $redis->zrevrange($type, 0, -1, true);
+        $objects = $redis->zrevrange('users', 0, -1, true);
 
         $data=array();
         foreach ($objects as $key => $value) {
             $data[] = array('label'=> $key, 'value' => $value);
+        }
+
+        $response = new JsonResponse();
+        $response->setData($data);
+        return $response;
+    }
+
+    public function autocompleteTicketsAction()
+    {
+        $redis = $this->get("RedisService")->getRedis();
+        $tickets = $redis->lRange('tickets', 0, -1);
+
+        $redis->multi(\Redis::PIPELINE);
+        foreach ($tickets as $id) {
+            $redis->hGetAll('ticket:'.$id);
+        }
+        $tickets = $redis->exec();
+
+        foreach($tickets as $ticket){
+            $data[] = array('label'=> $ticket['sTitle'], 'value' => $ticket['ixBug']);
         }
 
         $response = new JsonResponse();
