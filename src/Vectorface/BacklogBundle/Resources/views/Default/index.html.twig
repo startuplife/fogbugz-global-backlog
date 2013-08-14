@@ -10,7 +10,7 @@
                     <th></th>
                     <th>#</th>
                     <th>Title</th>
-                    <th>Milestone</th>
+                    <th>Status</th>
                     <th>Estimate</th>
                     <th>Assigned To</th>
                     <th>&nbsp;</th>
@@ -23,11 +23,7 @@
                     <td>{{ backlog.ixBug }}</td>
                     <td><a href="{{ fogbugzticket(backlog.ixBug) }}" target="_blank">{{ backlog.sTitle }}</a></td>
                     <td>
-                        {% if backlog.sFixFor == 'Undecided' %}
-                        <div class="muted">None</div>
-                        {% else %}
-                        {{ backlog.sFixFor }}
-                        {% endif %}
+                        {{ backlog.sStatus }}
                     </td>
                     <td>
                         {% if backlog.hrsCurrEst == 0 %}
