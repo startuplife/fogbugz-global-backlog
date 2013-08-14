@@ -30,7 +30,7 @@ class FogbugzService extends AbstractContainerAware
 
     public function pullTickets()
     {
-        $xml = $this->fogbugz->search(array('q' => '*', 'cols' => 'ixBug,sCategory,sTitle,sProject,ixProject,ixFixFor,sFixFor,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo,hrsCurrEst'));
+        $xml = $this->fogbugz->search(array('q' => 'status:open OR status:closed', 'cols' => 'ixBug,sCategory,sTitle,sProject,ixProject,sStatus,sEmailAssignedTo,sPersonAssignedTo,ixPersonAssignedTo,hrsCurrEst'));
         $this->redis->del('tickets');
         $this->redis->multi(\Redis::PIPELINE);
         foreach($xml->children() as $tickets){
@@ -41,19 +41,24 @@ class FogbugzService extends AbstractContainerAware
                     'sTitle' => (string)$ticket->sTitle,
                     'ixProject' => (string)$ticket->ixProject,
                     'sProject' => (string)$ticket->sProject,
-                    'ixFixFor' => (string)$ticket->ixFixFor,
-                    'sFixFor' => (string)$ticket->sFixFor,
                     'sStatus' => (string)$ticket->sStatus,
                     'sEmailAssignedTo' => (string)$ticket->sEmailAssignedTo,
                     'sPersonAssignedTo' => (string)$ticket->sPersonAssignedTo,
                     'hrsCurrEst' => (string)$ticket->hrsCurrEst
                     );
                 $this->redis->hMset('ticket:'.(string)$ticket->ixBug, $data);
+
+                $type = "closed";
+                if((string)$data['sStatus'] == "Active"){
+                    $type = "open";
+                }
+
+                $this->redis->lPush('tickets:'.$type, (string)$ticket->ixBug);
                 $this->redis->lPush('tickets', (string)$ticket->ixBug);
             }
         }
         $this->redis->exec();
-        return $xml->cases->attributes()->count;
+
     }
 
     public function pushBacklog()
