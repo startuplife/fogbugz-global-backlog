@@ -46,7 +46,7 @@ $(function() {
             function addTicketRow(data, ixBug) {
                 data = missingData(data);
                 html = '<tr data-ixBug="' + ixBug + '">';
-                html += '<td><i class="icon-list draggable"></i></td><td>' + ixBug + '</td><td><a href="' + data.url + ixBug +'">' + data.sTitle + '</a></td><td>' + data.sFixFor + '</td><td>' + data.hrsCurrEst + '</td><td>' + data.sPersonAssignedTo + '</td>';
+                html += '<td><i class="icon-list draggable"></i></td><td>' + ixBug + '</td><td><a href="' + data.url + ixBug +'">' + data.sTitle + '</a></td><td>' + data.sStatus + '</td><td>' + data.hrsCurrEst + '</td><td>' + data.sPersonAssignedTo + '</td>';
                 html += '<td><div class="btn-group pull-right"><a class="btn trigger-modal-edit" href="#"><i class="icon-pencil"></i></a><a class="btn btn-danger trigger-modal-delete" href="#"><i class="icon-trash"></i></a></div></td>';
                 html += '</tr>';
                 row = $('.table-tickets tbody').prepend(html);
