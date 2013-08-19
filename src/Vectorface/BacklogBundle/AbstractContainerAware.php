@@ -7,15 +7,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class AbstractContainerAware implements ContainerAwareInterface
 {
-	private $container;
+    private $container;
 
-	public function setContainer(ContainerInterface $container = null)
-	{
-		$this->container = $container;
-	}
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 
-	public function getContainer()
-	{
-		return $this->container;
-	}
+    public function getContainer()
+    {
+        return $this->container;
+    }
 }
