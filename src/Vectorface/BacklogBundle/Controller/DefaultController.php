@@ -38,7 +38,7 @@ class DefaultController extends Controller
         return $response;
     }
 
-    public function autocompleteTicketsAction()
+    public function autocompleteTicketsAction($type = "")
     {
         $redis = $this->get("RedisService")->getRedis();
         $tickets = $redis->lRange('tickets', 0, -1);

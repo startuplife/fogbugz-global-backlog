@@ -1,6 +1,6 @@
 $(function() {
     $.ajax({
-        url: "autocomplete/tickets",
+        url: "autocomplete/tickets/open",
         dataType: "json",
         success: function(data) {
             var counter = 0;
@@ -63,4 +63,9 @@ $(function() {
             }
         }
     });
+});
+
+$(".dropdown-menu li a").click(function(){
+  var selectedText = $(this).text();
+  $(this).parents('.btn-group').find('.dropdown-text').html(selectedText);
 });
