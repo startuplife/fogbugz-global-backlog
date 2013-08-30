@@ -1,6 +1,6 @@
 $(function() {
     $.ajax({
-        url: "autocomplete/users",
+        url: "/backlog/autocomplete/users",
         dataType: "json",
         success: function(data) {
             var counter = 0;

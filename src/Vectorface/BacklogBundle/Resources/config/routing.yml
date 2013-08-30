@@ -1,6 +1,6 @@
 vectorface_backlog_main:
     pattern:  /
-    defaults: { _controller: VectorfaceBacklogBundle:Default:index }
+    defaults: { _controller: VectorfaceBacklogBundle:Product:index }
 
 vectorface_backlog_autocomplete_users:
     pattern:  /autocomplete/users
@@ -10,17 +10,9 @@ vectorface_backlog_autocomplete_tickets:
     pattern:  /autocomplete/tickets/{type}
     defaults: { _controller: VectorfaceBacklogBundle:Default:autocompletetickets, type: ''}
 
-vectorface_backlog_add:
-    pattern:  /add/{ixBug}
-    defaults: { _controller: VectorfaceBacklogBundle:Default:add }
-
 vectorface_backlog_delete:
     pattern:  /delete/{ixBug}
     defaults: { _controller: VectorfaceBacklogBundle:Default:delete }
-
-vectorface_backlog_up:
-    pattern:  /move/{ixBug}/{position}
-    defaults: { _controller: VectorfaceBacklogBundle:Default:move }
 
 vectorface_backlog_pull:
     pattern:  /pull
@@ -30,12 +22,8 @@ vectorface_backlog_push:
     pattern:  /push
     defaults: { _controller: VectorfaceBacklogBundle:Default:push }
 
-vectorface_backlog_edit:
-    pattern:  /edit/{ixBug}
-    defaults: { _controller: VectorfaceBacklogBundle:Default:edit }
-
 vectorface_backlog_product:
-    pattern:  /product
+    pattern:  /product/
     defaults: { _controller: VectorfaceBacklogBundle:Product:index }
 
 vectorface_backlog_sprint:
@@ -45,3 +33,19 @@ vectorface_backlog_sprint:
 vectorface_backlog_sprint_view:
     pattern:  /sprint/{id}
     defaults: { _controller: VectorfaceBacklogBundle:Sprint:view }
+
+vectorface_backlog_edit:
+    pattern:  /edit/{ixBug}
+    defaults: { _controller: VectorfaceBacklogBundle:Default:edit }
+
+vectorface_backlog_up:
+    pattern:  /move/{ixBug}/{position}
+    defaults: { _controller: VectorfaceBacklogBundle:Default:move }
+
+vectorface_backlog_sprint_add:
+    pattern:  /sprint/add/{ixBug}/{id}
+    defaults: { _controller: VectorfaceBacklogBundle:Sprint:add }
+
+vectorface_backlog_product_add:
+    pattern:  /product/add/{ixBug}/
+    defaults: { _controller: VectorfaceBacklogBundle:Product:add }

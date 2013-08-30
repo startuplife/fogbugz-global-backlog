@@ -1,6 +1,7 @@
 {% extends 'VectorfaceBacklogBundle::base.html.twig' %}
+{% block autocomplete_disabled %}{% endblock %}
 
-{% block content%}
+{% block content %}
 
 <div class="row">
     <div class="span12">
@@ -8,8 +9,8 @@
             <h3 style="display:inline;">Product <span class="badge badge-info">{{ backlogs|length }}</span></h3>
             <div class="btn-toolbar pull-right" style="margin-top:0px">
                 <div class="btn-group">
-                    <a class="btn" href="#"><i class="icon-share-alt"></i></a>
-                    <a class="btn btn-danger" href="#"><i class="icon-trash"></i></a>
+                    <a class="btn disabled" href="#"><i class="icon-share-alt"></i></a>
+                    <a class="btn btn-danger disabled" href="#"><i class="icon-trash"></i></a>
                 </div>
             </div>
         </div>

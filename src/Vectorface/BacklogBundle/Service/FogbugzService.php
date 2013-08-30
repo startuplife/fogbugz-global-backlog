@@ -13,17 +13,17 @@ class FogbugzService extends AbstractContainerAware
     private $redis;
     private $logon;
 
-    public function __construct(RedisService $redis)
+    public function __construct(array $fogbugzConfig, RedisService $redis)
     {
         $this->redis = $redis->getRedis();
+        $this->logon($fogbugzConfig);
     }
 
-    public function logon(){
-        $parameters = $this->getContainer()->getParameter("fogbugz");
+    public function logon($config){
         $this->fogbugz = new FogBugz\Api(
-            $parameters['user'],
-            $parameters['password'],
-            $parameters['url']
+            $config['user'],
+            $config['password'],
+            $config['url']
             );
         $this->fogbugz->logon();
     }
