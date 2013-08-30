@@ -1,6 +1,6 @@
 $(function() {
     $.ajax({
-        url: "autocomplete/tickets",
+        url: "/backlog/autocomplete/tickets/open",
         dataType: "json",
         success: function(data) {
             var counter = 0;
@@ -29,8 +29,9 @@ $(function() {
                 minLength: 1,
                 autoFocus: true,
                 select: function( event, ui ) {
+                    var listId = $('.search-tickets').attr('data-list-id');
                     $.ajax({
-                        url: 'add/' + ui.item.id,
+                        url: 'add/' + ui.item.id + '/' + listId,
                         type: 'post',
                         dataType: "json",
                         success: function (data) {
@@ -46,7 +47,7 @@ $(function() {
             function addTicketRow(data, ixBug) {
                 data = missingData(data);
                 html = '<tr data-ixBug="' + ixBug + '">';
-                html += '<td><i class="icon-list draggable"></i></td><td>' + ixBug + '</td><td><a href="' + data.url + ixBug +'">' + data.sTitle + '</a></td><td>' + data.sFixFor + '</td><td>' + data.hrsCurrEst + '</td><td>' + data.sPersonAssignedTo + '</td>';
+                html += '<td>&nbsp;</td><td><input type="checkbox" name="" value=""></td><td><a href="' + data.url + ixBug +'">' + data.sTitle + '</a></td><td>' + data.sStatus + '</td><td>' + data.hrsCurrEst + '</td><td>' + data.sPersonAssignedTo + '</td>';
                 html += '<td><div class="btn-group pull-right"><a class="btn trigger-modal-edit" href="#"><i class="icon-pencil"></i></a><a class="btn btn-danger trigger-modal-delete" href="#"><i class="icon-trash"></i></a></div></td>';
                 html += '</tr>';
                 row = $('.table-tickets tbody').prepend(html);
@@ -63,4 +64,9 @@ $(function() {
             }
         }
     });
+});
+
+$(".dropdown-menu li a").click(function(){
+  var selectedText = $(this).text();
+  $(this).parents('.btn-group').find('.dropdown-text').html(selectedText);
 });

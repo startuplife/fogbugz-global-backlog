@@ -1,0 +1,78 @@
+{% extends 'VectorfaceBacklogBundle::base.html.twig' %}
+{% block autocomplete_disabled %}{% endblock %}
+{% block autocomplete_list_id %}{{ listId }}{% endblock %}
+
+{% block content%}
+
+<div class="row">
+    <div class="span12">
+        <div class="clearfix">
+            <h3 style="display:inline;">Sprint #8 <span class="badge badge-info">{{ backlogs|length }}</span></h3>
+            <div class="btn-toolbar pull-right" style="margin-top:0px">
+                <div class="btn-group">
+                    <a class="btn" href="#"><i class="icon-share-alt"></i></a>
+                    <a class="btn btn-danger" href="#"><i class="icon-trash"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <table class="table-tickets table table-condensed table-striped" id="sortable">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th><input type="checkbox" name="" value=""></th>
+                    <th>Title</th>
+                    <th>Estimate</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for backlog in backlogs %}
+                <tr data-ixBug="{{ backlog.ixBug }}" class="draggable">
+                    <td><span class="badge">{{ loop.index }}</span></td>
+                    <td><input type="checkbox" name="" value=""></td>
+                    <td><a href="{{ fogbugzticket(backlog.ixBug) }}" target="_blank">{{ backlog.sTitle }}</a></td>
+                    <td>
+                        {% if backlog.hrsCurrEst == 0 %}
+                        <div class="muted">None</div>
+                        {% else %}
+                        {{ backlog.hrsCurrEst }} hours
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ backlog.sStatus }}
+                    </td>
+                    <td>
+                        {% if backlog.sPersonAssignedTo == 'Unassigned' %}
+                        <div class="muted">None</div>
+                        {% else %}
+                        {{ backlog.sPersonAssignedTo }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group pull-right">
+                            <button class="btn trigger-modal-edit"><i class="icon-pencil"></i></button>
+                            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" class="trigger-modal-delete"><i class="icon-share-alt"></i>&nbsp; Move to Sprint</a></li>
+                                <li><a href="#" class="trigger-modal-delete"><i class="icon-trash"></i>&nbsp; Remove from list</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

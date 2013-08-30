@@ -58,42 +58,66 @@
     <div class="navbar navbar-static-top">
         <div class="navbar-inner">
             <div class="container">
-                <span class="brand"><a href="{{ path('vectorface_backlog_main') }}">Backlogs</a></span>
+                <ul class="nav pull-left">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Backlog&nbsp;<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('vectorface_backlog_product') }}">Product</a></li>
+                            <li><a href="{{ path('vectorface_backlog_sprint') }}">Sprints</a></li>
+                        </ul>
+                    </li>
+                    <li class="divider-vertical"></li>
+                </ul>
+
                 <ul class="nav pull-right">
                     <li>
                         <form class="navbar-search">
-                            <input type="text" class="search-tickets search-query" autofocus="autofocus" placeholder="Add to backlog">
-                        </form>
-                    </li>
-                    <li class="divider-vertical"></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-pull"><a href="{{ path('vectorface_backlog_pull') }}"><i class=" icon-arrow-left"></i>&nbsp;Pull</a></li>
-                            <li class="dropdown-push"><a href="{{ path('vectorface_backlog_push') }}"><i class=" icon-arrow-right"></i>&nbsp;Push</a></li>
-                            <li class="divider"></li>
-                            <li><a href="https://github.com/Vectorface/fogbugz-global-backlog/issues"><i class="icon-comment"></i>&nbsp;Suggest Feature</a></li>
-                        </ul>
-                    </li>
+                            <div class="input-prepend">
+                              <div class="btn-group">
+                                <button class="btn" tabindex="-1">Open</button>
+                                <button class="btn dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                  <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                <li><a href="#">Open</a></li>
+                                <li class="disabled"><a href="#">Closed</a></li>
+                                <li class="disabled"><a href="#">All</a></li>
+                            </ul>
+                        </div>
+                        <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" class="search-tickets ui-autocomplete-input" autofocus="autofocus" placeholder="Add to backlog" autocomplete="off" data-list-id="{% block autocomplete_list_id %}{% endblock %}" {% block autocomplete_disabled %}disabled{% endblock %}>
+                    </div>
+                </form>
+            </li>
+            <li class="divider-vertical"></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon-wrench"></span></a>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-pull"><a href="{{ path('vectorface_backlog_pull') }}"><i class=" icon-arrow-left"></i>&nbsp;Pull</a></li>
+                    <li class="dropdown-push"><a href="{{ path('vectorface_backlog_push') }}"><i class=" icon-arrow-right"></i>&nbsp;Push</a></li>
+                    <li class="divider"></li>
+                    <li><a href="https://github.com/Vectorface/fogbugz-global-backlog/issues"><i class="icon-comment"></i>&nbsp;Suggest Feature</a></li>
                 </ul>
-            </div>
-        </div>
+            </li>
+        </ul>
     </div>
+</div>
+</div>
 
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
 
-    {% block javascripts %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    <script src="{{ asset('bundles/vectorfacebacklog/js/bootstrap.min.js') }}" type="text/javascript" /></script>
-    <script src="{{ asset('bundles/vectorfacebacklog/js/search-tickets.js') }}" type="text/javascript" /></script>
-    <script src="{{ asset('bundles/vectorfacebacklog/js/search-users.js') }}" type="text/javascript" /></script>
-    <script src="{{ asset('bundles/vectorfacebacklog/js/modal.js') }}" type="text/javascript" /></script>
-    <script src="{{ asset('bundles/vectorfacebacklog/js/tooltip.js') }}" type="text/javascript" /></script>
-    <script src="{{ asset('bundles/vectorfacebacklog/js/sortable.js') }}" type="text/javascript" /></script>
-    {% endblock %}
+{% block javascripts %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script src="{{ asset('bundles/vectorfacebacklog/js/bootstrap.min.js') }}" type="text/javascript" /></script>
+<script src="{{ asset('bundles/vectorfacebacklog/js/checkall.js') }}" type="text/javascript" /></script>
+<script src="{{ asset('bundles/vectorfacebacklog/js/search-tickets.js') }}" type="text/javascript" /></script>
+<script src="{{ asset('bundles/vectorfacebacklog/js/search-users.js') }}" type="text/javascript" /></script>
+<script src="{{ asset('bundles/vectorfacebacklog/js/modal.js') }}" type="text/javascript" /></script>
+<script src="{{ asset('bundles/vectorfacebacklog/js/tooltip.js') }}" type="text/javascript" /></script>
+<script src="{{ asset('bundles/vectorfacebacklog/js/sortable.js') }}" type="text/javascript" /></script>
+{% endblock %}
 
 </body>
 </html>

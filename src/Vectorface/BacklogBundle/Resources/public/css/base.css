@@ -1,3 +1,7 @@
 .draggable {
     cursor: url(https://mail.google.com/mail/images/2/closedhand.cur), default !important;
 }
+
+div.row.content-header hr {
+    margin: 5px 0px 15px 0px;
+}
