@@ -17,6 +17,7 @@ parameters:
     fogbugz:
         user: ~
         password: ~
+        token: ~
         url: ~
         url_ticket: ~
 

@@ -20,12 +20,23 @@ class FogbugzService extends AbstractContainerAware
 
     public function logon(){
         $parameters = $this->getContainer()->getParameter("fogbugz");
+
+        /* Logon/Token is kind of hacky because of the vendor package we're using */
         $this->fogbugz = new FogBugz\Api(
             $parameters['user'],
             $parameters['password'],
             $parameters['url']
             );
-        $this->fogbugz->logon();
+
+        /* If provided username & password log in to get the token */
+        if(!empty($parameters['user']) && !empty($parameters['password'])){
+            $this->fogbugz->logon();
+        }
+
+        /* If provided token; Logon process isn't needed */
+        if(!empty($parameters['token'])){
+            $this->fogbugz->token = $parameters['token'];
+        }
     }
 
     public function pullTickets()
