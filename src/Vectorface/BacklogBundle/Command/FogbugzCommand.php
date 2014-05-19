@@ -12,7 +12,6 @@ use There4\FogBugz;
 
 class FogbugzCommand extends BacklogBundle\AbstractCommand
 {
-    private $redis;
 
     protected function configure()
     {
@@ -31,7 +30,6 @@ class FogbugzCommand extends BacklogBundle\AbstractCommand
     {
 
         $container = $this->getContainer();
-        $this->redis = $container->get("RedisService")->getRedis();
         $this->fogbugz = $container->get("FogbugzService");
         $this->fogbugz->logon();
 
