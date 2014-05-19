@@ -2,24 +2,27 @@
 
 namespace Vectorface\BacklogBundle\Service;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Vectorface\BacklogBundle\AbstractContainerAware;
 use Vectorface\BacklogBundle\Service\RedisService;
 use There4\FogBugz;
 
-class FogbugzService extends AbstractContainerAware
+class FogbugzService
 {
     private $redis;
     private $logon;
 
     public function __construct(RedisService $redis)
     {
-        $this->redis = $redis->getRedis();
+        $this->redis = $redis;
     }
 
-    public function logon(){
-        $parameters = $this->getContainer()->getParameter("fogbugz");
+    public function setConfig($config = array())
+    {
+        $this->config = $config;
+    }
+
+    public function logon()
+    {
+        $parameters = $this->config;
 
         /* Logon/Token is kind of hacky because of the vendor package we're using */
         $this->fogbugz = new FogBugz\Api(

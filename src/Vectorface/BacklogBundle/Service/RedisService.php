@@ -2,35 +2,36 @@
 
 namespace Vectorface\BacklogBundle\Service;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Vectorface\BacklogBundle\AbstractContainerAware;
-
-class RedisService extends AbstractContainerAware
+class RedisService
 {
     private $redis;
+    private $config;
 
+    /**
+     * @param array $config Configuration for host, port, db, prefix
+     */
     public function __construct()
     {
         $this->redis = null;
     }
 
-    public function getRedis()
+    public function setConfig($config = array())
+    {
+        $this->config = $config;
+    }
+
+    public function connect()
     {
         if (is_null($this->redis) === false)
         {
             return $this->redis;
         }
 
-        // misc
-        $parameters = $this->getContainer()->getParameter("redis");
-
-        // connecting to redis
         $this->redis = new \Redis();
-        $this->redis->connect($parameters["host"], $parameters["port"]);
-        $this->redis->select($parameters["db"]);
-        $this->redis->setOption(\Redis::OPT_PREFIX, $parameters["prefix"]);
-
+        $this->redis->connect($this->config["host"], $this->config["port"]);
+        $this->redis->select($this->config["db"]);
+        $this->redis->setOption(\Redis::OPT_PREFIX, $this->config["prefix"]);
         return $this->redis;
     }
+
 }

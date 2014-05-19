@@ -11,7 +11,7 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        $redis = $this->get("RedisService")->getRedis();
+        $redis = $this->get("RedisService")->connect();
 
         $data['backlogs'] = array();
         $backlogs = $redis->lRange("rankOfBacklogs", 0, -1);
@@ -24,7 +24,7 @@ class DefaultController extends Controller
 
     public function autocompleteAction($type)
     {
-        $redis = $this->get("RedisService")->getRedis();
+        $redis = $this->get("RedisService")->connect();
 
         $objects = $redis->zrevrange($type, 0, -1, true);
 
@@ -40,7 +40,7 @@ class DefaultController extends Controller
 
     public function addAction($ixBug)
     {
-        $redis = $this->get("RedisService")->getRedis();
+        $redis = $this->get("RedisService")->connect();
 
         $data['status'] = true;
         $data['ticket'] = $redis->hGetAll('ticket:'. $ixBug);
@@ -58,7 +58,7 @@ class DefaultController extends Controller
 
     public function deleteAction($ixBug)
     {
-        $redis = $this->get("RedisService")->getRedis();
+        $redis = $this->get("RedisService")->connect();
 
         $response = new Response();
         $redis->lRem('rankOfBacklogs', $ixBug, 1);
@@ -68,7 +68,7 @@ class DefaultController extends Controller
 
     public function moveAction($ixBug, $position)
     {
-        $redis = $this->get("RedisService")->getRedis();
+        $redis = $this->get("RedisService")->connect();
 
         $redis->lRem('rankOfBacklogs', $ixBug, 0);
 
@@ -123,7 +123,7 @@ class DefaultController extends Controller
             $fogbugz->updateTimeEstimate($ixBug, $timeEstimate);
         }
 
-        $redis = $this->get("RedisService")->getRedis();
+        $redis = $this->get("RedisService")->connect();
         $data = $redis->hGetAll('ticket:'. $ixBug);
 
         $response = new JsonResponse();

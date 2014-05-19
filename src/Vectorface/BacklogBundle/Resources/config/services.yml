@@ -5,12 +5,12 @@ services:
     redisservice:
         class: Vectorface\BacklogBundle\Service\RedisService
         calls:
-            - [setContainer, [@service_container]]
+            - [setConfig, ["%redis%"]]
     fogbugzservice:
         class: Vectorface\BacklogBundle\Service\FogbugzService
         arguments: ["@RedisService"]
         calls:
-            - [setContainer, [@service_container]]
+            - [setConfig, ["%fogbugz%"]]
     Vectorface.twig.fogbugz_extension:
         class: Vectorface\BacklogBundle\Twig\Extension\FogbugzExtension
         tags:
